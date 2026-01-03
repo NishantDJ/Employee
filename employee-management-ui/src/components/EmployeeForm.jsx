@@ -6,7 +6,7 @@ export default function EmployeeForm({ onEmployeeAdded }) {
     name: "",
     email: "",
     department: "",
-    salary: 0
+    salary: ""
   });
 
   const [error, setError] = useState("");
@@ -24,7 +24,7 @@ export default function EmployeeForm({ onEmployeeAdded }) {
 
     try {
       await createEmployee(form);
-      setForm({ name: "", email: "", department: "", salary: 0 });
+      setForm({ name: "", email: "", department: "", salary: "" });
       onEmployeeAdded(); // refresh list
     } catch (err) {
       setError(err.message);
@@ -37,10 +37,10 @@ export default function EmployeeForm({ onEmployeeAdded }) {
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <input name="name" placeholder="Name" onChange={handleChange} />
-      <input name="email" placeholder="Email" onChange={handleChange} />
-      <input name="department" placeholder="Department" onChange={handleChange} />
-      <input name="salary" type="number" onChange={handleChange} />
+      <input name="name" placeholder="Name" value={form.name} onChange={handleChange} />
+      <input name="email" placeholder="Email" value={form.email} onChange={handleChange} />
+      <input name="department" placeholder="Department" value={form.department} onChange={handleChange} />
+      <input name="salary" type="number" value={form.salary} onChange={handleChange} />
 
       <button type="submit">Save</button>
     </form>

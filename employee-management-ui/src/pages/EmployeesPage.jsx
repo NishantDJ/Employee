@@ -1,8 +1,8 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getEmployees } from "../api/employeeApi";
 import EmployeeList from "../components/EmployeeList";
 import EmployeeForm from "../components/EmployeeForm";
+import "../styles/Employee.css";
 
 export default function EmployeesPage() {
   const [employees, setEmployees] = useState([]);
@@ -25,11 +25,11 @@ export default function EmployeesPage() {
   }
 
   return (
-    <div>
+    <div className="container">
       <h1>Employee Management</h1>
 
-      {loading && <p>Loading...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {loading && <p className="loading">Loading employees...</p>}
+      {error && <p className="error">{error}</p>}
 
       <EmployeeForm onEmployeeAdded={loadEmployees} />
       <EmployeeList employees={employees} />

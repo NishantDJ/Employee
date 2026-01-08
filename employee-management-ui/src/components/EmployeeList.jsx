@@ -1,6 +1,6 @@
 export default function EmployeeList({ employees }) {
   return (
-    <table border="1" cellPadding="8">
+    <table>
       <thead>
         <tr>
           <th>Name</th>

@@ -12,10 +12,7 @@ export default function EmployeeForm({ onEmployeeAdded }) {
   const [error, setError] = useState("");
 
   function handleChange(e) {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
-    });
+    setForm({ ...form, [e.target.name]: e.target.value });
   }
 
   async function handleSubmit(e) {
@@ -25,7 +22,7 @@ export default function EmployeeForm({ onEmployeeAdded }) {
     try {
       await createEmployee(form);
       setForm({ name: "", email: "", department: "", salary: "" });
-      onEmployeeAdded(); // refresh list
+      onEmployeeAdded();
     } catch (err) {
       setError(err.message);
     }
@@ -35,14 +32,16 @@ export default function EmployeeForm({ onEmployeeAdded }) {
     <form onSubmit={handleSubmit}>
       <h3>Add Employee</h3>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className="error">{error}</p>}
 
-      <input name="name" placeholder="Name" value={form.name} onChange={handleChange} />
-      <input name="email" placeholder="Email" value={form.email} onChange={handleChange} />
-      <input name="department" placeholder="Department" value={form.department} onChange={handleChange} />
-      <input name="salary" type="number" value={form.salary} onChange={handleChange} />
+      <div className="form-grid">
+        <input name="name" placeholder="Name" value={form.name} onChange={handleChange} />
+        <input name="email" placeholder="Email" value={form.email} onChange={handleChange} />
+        <input name="department" placeholder="Department" value={form.department} onChange={handleChange} />
+        <input name="salary" type="number" placeholder="Salary" value={form.salary} onChange={handleChange} />
+      </div>
 
-      <button type="submit">Save</button>
+      <button type="submit">Save Employee</button>
     </form>
   );
 }

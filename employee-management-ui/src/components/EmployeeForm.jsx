@@ -1,15 +1,19 @@
-import { useState } from "react";
-import { createEmployee } from "../api/employeeApi";
+import { useEffect, useState } from "react";
+import { employeeApi } from "../api/employeeApi";
 
-export default function EmployeeForm({ onEmployeeAdded }) {
+export default function EmployeeForm({ selectedEmployee, onSuccess }) {
   const [form, setForm] = useState({
     name: "",
     email: "",
     department: "",
-    salary: ""
+    salary: 0
   });
 
-  const [error, setError] = useState("");
+  useEffect(() => {
+    if (selectedEmployee) {
+      setForm(selectedEmployee);
+    }
+  }, [selectedEmployee]);
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -17,31 +21,29 @@ export default function EmployeeForm({ onEmployeeAdded }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setError("");
 
-    try {
-      await createEmployee(form);
-      setForm({ name: "", email: "", department: "", salary: "" });
-      onEmployeeAdded();
-    } catch (err) {
-      setError(err.message);
+    if (selectedEmployee) {
+      await employeeApi.update(selectedEmployee.id, form);
+    } else {
+      await employeeApi.create(form);
     }
+
+    setForm({ name: "", email: "", department: "", salary: 0 });
+    onSuccess();
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Add Employee</h3>
-
-      {error && <p className="error">{error}</p>}
-
-      <div className="form-grid">
-        <input name="name" placeholder="Name" value={form.name} onChange={handleChange} />
-        <input name="email" placeholder="Email" value={form.email} onChange={handleChange} />
-        <input name="department" placeholder="Department" value={form.department} onChange={handleChange} />
-        <input name="salary" type="number" placeholder="Salary" value={form.salary} onChange={handleChange} />
-      </div>
-
-      <button type="submit">Save Employee</button>
-    </form>
+    <>
+      <h2>{selectedEmployee ? "Edit Employee" : "Add Employee"}</h2>
+      <form onSubmit={handleSubmit}>
+        <input name="name" value={form.name} placeholder="Name" onChange={handleChange} />
+        <input name="email" value={form.email} placeholder="Email" onChange={handleChange} />
+        <input name="department" value={form.department} placeholder="Department" onChange={handleChange} />
+        <input name="salary" type="number" value={form.salary} onChange={handleChange} />
+        <button type="submit">
+          {selectedEmployee ? "Update" : "Create"}
+        </button>
+      </form>
+    </>
   );
 }

@@ -31,7 +31,7 @@ export default function EmployeesPage() {
 
       {error && <p style={{ color: "red" }}>{error}</p>}
       {loading && <p>Loading...</p>}
-
+  
       <EmployeeForm
         selectedEmployee={selectedEmployee}
         onSuccess={() => {
